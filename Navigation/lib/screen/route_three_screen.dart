@@ -8,7 +8,7 @@ class RouteThreeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final argument = ModalRoute.of(context)!.settings.arguments;
 
-    return MainLayout(title: 'Route One', children: [
+    return MainLayout(title: 'Route Three', children: [
       Text(
         'argument: ${argument}',
         textAlign: TextAlign.center,

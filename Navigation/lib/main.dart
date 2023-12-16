@@ -12,7 +12,7 @@ void main() {
 
     initialRoute: HOME_ROUTE,
     routes: {
-      HOME_ROUTE: (context) => Home_Screen(),
+      '/': (context) => Home_Screen(),
       'one': (context) => RouteOneScreen(),
       'two': (context) => RouteTwoScreen(),
       'three': (context) => RouteThreeScreen(),

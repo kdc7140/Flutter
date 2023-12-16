@@ -22,7 +22,7 @@ class RouteOneScreen extends StatelessWidget {
                 arguments: 789,
               )));
         },
-        child: Text('Pop'),
+        child: Text('Push'),
       ),
     ]);
   }

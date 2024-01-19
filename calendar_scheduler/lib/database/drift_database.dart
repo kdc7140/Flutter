@@ -11,18 +11,24 @@ import 'package:path_provider/path_provider.dart';
 // private 값까지 다 불러 올 수 있다.
 part 'drift_database.g.dart';
 
-@DriftDatabase(
-  tables: [
-    Schedules,
-    CategoryColors,
-  ]
-)
-
-class LocalDatabase extends _$LocalDatabase{
+@DriftDatabase(tables: [
+  Schedules,
+  CategoryColors,
+])
+class LocalDatabase extends _$LocalDatabase {
   LocalDatabase() : super(_openConnection());
+
+  Future<int> createSchedule(SchedulesCompanion data) => into(schedules).insert(data);
+
+  Future<int> createCategoryColor(CategoryColorsCompanion data) => into(categoryColors).insert(data);
+
+  Future<List<CategoryColor>> getCategoryColors() => select(categoryColors).get();
+
+  @override
+  int get schemaVersion => 1;
 }
 
-LazyDatabase _openConnection(){
+LazyDatabase _openConnection() {
   return LazyDatabase(() async {
     final dbFolder = await getApplicationDocumentsDirectory();
     final file = File(p.join(dbFolder.path, 'db.sqlite'));

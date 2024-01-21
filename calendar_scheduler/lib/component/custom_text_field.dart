@@ -4,10 +4,19 @@ import 'package:flutter/services.dart';
 
 class CustomTextField extends StatelessWidget {
   final String label;
+  final String initialValue;
+
+  // true - 시간 / false - 내용
   final bool isTime;
   final FormFieldSetter<String> onSaved;
 
-  const CustomTextField({required this.label, required this.isTime, required this.onSaved, super.key});
+  const CustomTextField({
+    required this.isTime,
+    required this.label,
+    required this.onSaved,
+    required this.initialValue,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -33,41 +42,46 @@ class CustomTextField extends StatelessWidget {
   Widget renderTextField() {
     return TextFormField(
       onSaved: onSaved,
-      // null 이 return 되면 에러가 없다
-      // 에러가 있으면 String 값으로 리턴해준다.
+      // null이 return 되면 에러가 없다.
+      // 에러가 있으면 에러를 String 값으로 리턴해준다.
       validator: (String? val){
         if(val == null || val.isEmpty){
-          return 'Please, entered value';
+          return '값을 입력해주세요';
         }
 
         if(isTime){
           int time = int.parse(val);
 
           if(time < 0){
-            return 'Please enter a number better than 0.';
+            return '0 이상의 숫자를 입력해주세요';
           }
 
           if(time > 24){
-            return 'Please enter a number less than 24.';
+            return '24 이하의 숫자를 입력해주세요';
           }
         }else{
           if(val.length > 500){
-            return 'Please enter no more than 500 characters.';
+            return '500자 이하의 글자를 입력해주세요.';
           }
         }
+
+        return null;
       },
       cursorColor: Colors.grey,
       maxLines: isTime ? 1 : null,
       expands: !isTime,
-      //키보드 타입 설정
+      initialValue: initialValue,
       keyboardType: isTime ? TextInputType.number : TextInputType.multiline,
-      inputFormatters: isTime ? [
-        FilteringTextInputFormatter.digitsOnly, //숫자만 입력가능, 블루투스 키보드 싹다 막힘
-      ] : [],
+      inputFormatters: isTime
+          ? [
+              FilteringTextInputFormatter.digitsOnly,
+            ]
+          : [],
       decoration: InputDecoration(
         border: InputBorder.none,
         filled: true,
         fillColor: Colors.grey[300],
+        suffixText: isTime ? '시' : null,
       ),
     );
   }

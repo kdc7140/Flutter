@@ -1,7 +1,12 @@
 import 'package:drift/drift.dart';
 
-class Schedules extends Table{
+class Schedules extends Table {
   // PRIMARY KEY
+  // CONTENT, DATE, STARTTIME, ENDTIME, COLORID, CREATEDAT
+  // 'asdff', 2021-1-2, 12, 14, 1, 2021-3-5
+  // 1
+  // 2
+  // 3
   IntColumn get id => integer().autoIncrement()();
 
   // 내용
@@ -13,12 +18,14 @@ class Schedules extends Table{
   // 시작 시간
   IntColumn get startTime => integer()();
 
-  // 종료 시간
+  // 끝 시간
   IntColumn get endTime => integer()();
 
   // Category Color Table ID
   IntColumn get colorId => integer()();
 
-  // 생성 날짜
-  DateTimeColumn get cratedAt => dateTime().clientDefault(() => DateTime.now())();
+  // 생성날짜
+  DateTimeColumn get createdAt => dateTime().clientDefault(
+        () => DateTime.now(),
+      )();
 }

@@ -2,23 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:scrollable_widget/const/colors.dart';
 import 'package:scrollable_widget/layout/main_layout.dart';
 
-class ListViewScreen extends StatelessWidget {
-  final List<int> numbers = List.generate(100, (index) => index);
+class GridViewScreen extends StatelessWidget {
+  List<int> numbers = List.generate(100, (index) => index);
 
-  ListViewScreen({Key? key}) : super(key: key);
+  GridViewScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MainLayout(
-      title: 'ListViewScreen',
-      body: renderSeparated(),
+      title: 'GridViewScreen',
+      body: renderMaxExtent(),
     );
   }
 
   // 1
-  // 기본 - 모두 한번에 그림
-  Widget renderDefault() {
-    return ListView(
+  // 한번에 다 그림!
+  Widget renderCount() {
+    return GridView.count(
+      crossAxisCount: 2,
+      crossAxisSpacing: 12.0,
+      mainAxisSpacing: 12.0,
       children: numbers
           .map(
             (e) => renderContainer(
@@ -32,44 +35,37 @@ class ListViewScreen extends StatelessWidget {
 
   // 2
   // 보이는것만 그림
-  Widget renderBuilder() {
-    return ListView.builder(
-      itemCount: 100,
+  Widget renderBuilderCrossAxisCount(){
+    return GridView.builder(
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        crossAxisSpacing: 12.0,
+        mainAxisSpacing: 12.0,
+      ),
       itemBuilder: (context, index) {
         return renderContainer(
           color: rainbowColors[index % rainbowColors.length],
           index: index,
         );
       },
+      itemCount: 100,
     );
   }
 
   // 3
-  // 2 + 중간 중간에 추가할 위젯 넣을 수 있음
-  Widget renderSeparated(){
-    return ListView.separated(
-      itemCount: 100,
+  // 최대 사이즈
+  Widget renderMaxExtent(){
+    return GridView.builder(
+      gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+        maxCrossAxisExtent: 220,
+      ),
       itemBuilder: (context, index) {
         return renderContainer(
           color: rainbowColors[index % rainbowColors.length],
           index: index,
         );
       },
-      separatorBuilder: (context, index) {
-        index += 1;
-
-        // 5개의 item마다 배너 보여주기
-        if(index % 5 == 0){
-          return renderContainer(
-            color: Colors.black,
-            index: index,
-            height: 100,
-          );
-        }
-
-        return SizedBox(height: 32,);
-
-      },
+      itemCount: 100,
     );
   }
 
